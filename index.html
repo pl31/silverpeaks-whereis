@@ -9,6 +9,7 @@
 <title>silverpeaks.de - whereis</title>
 
 <link href="style.css" rel="stylesheet" type="text/css" />
+<link href="3rdparty/shariff/shariff.min.css" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript" src="3rdparty/jquery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyC8hRuNKL28GskPoracpWQq-gT7WrkFCwc"></script>
@@ -49,26 +50,6 @@
     		$('#browser_error').removeClass('invisible');
     }
     $(document).ready(init);
-</script>
-<!-- Dieses Tag in den Head-Bereich oder direkt vor dem schließenden Body-Tag einfügen -->
-<!-- http://www.media-deluxe.de/blog/2011/07/den-google-1-button-datenschutzkonform-integrieren/ -->
-<script type="text/javascript">
-function loadScript(jssource) {
-	var jsnode = document.createElement('script');
-	jsnode.setAttribute('type','text/javascript');
-	jsnode.setAttribute('src',jssource);
-	document.getElementsByTagName('head')[0].appendChild(jsnode);
-	document.getElementById('plus1').innerHTML = "";
-}
-var plus1source = "https://apis.google.com/js/plusone.js";
-function loadfblike(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) {return;}
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-  fjs.parentNode.insertBefore(js, fjs);
-  document.getElementById('fblike').innerHTML = "";
-}
 </script>
 </head>
 
@@ -144,19 +125,17 @@ function loadfblike(d, s, id) {
 		</li>
 		</ul>
 		<p><br></p>
-		<!-- fb -->
-		<a id="fblike" href="javascript:loadfblike(document, 'script', 'facebook-jssdk')"><em>Facebook Like</em> aktivieren.</a>
-		<div id="fb-root"></div>
-		<div class="fb-like" data-href="https://whereis.silverpeaks.de" data-send="true" data-width="450" data-show-faces="false"></div>
-		<!-- Dieses Tag dort einfügen, wo die +1-Schaltfläche dargestellt werden soll -->
-		<a id="plus1" href="javascript:loadScript(plus1source)"><em>Google +1</em> aktivieren.</a>
-		<g:plusone href="https://whereis.silverpeaks.de"></g:plusone>
+
+		<div class="shariff" data-url="http://whereis.silverpeaks.de" data-services="[&quot;facebook&quot;,&quot;googleplus&quot;]" data-theme="grey"></div>
 	</div>
 </div>
 <div id="map_area">
 	<div id="map_canvas"></div>
 </div>
 </div>
+
+<script type="text/javascript" src="3rdparty/shariff/shariff.min.js"></script>
+
 </body>
 
 </html>
