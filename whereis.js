@@ -104,7 +104,7 @@ whereis.file_input_change = function (je) {
 };
 
 whereis.image_tag = function (file) {
-	return file.name + ";" + file.size + ";" + file.lastModifiedDate;
+	return file.name + ";" + file.size + ";" + (file.lastModified || "");
 };
 
 whereis.contains_image = function (file) {
