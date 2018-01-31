@@ -30,16 +30,16 @@ whereis.init = function () {
 	if (!window.console) {
 		window.console = {};
 	}
-	window.console.error = window.console.error || function () {};
-	window.console.warn = window.console.warn || function () {};
-	window.console.info = window.console.info || function () {};
-	window.console.log = window.console.log || function () {};
+	window.console.error = window.console.error || function () { };
+	window.console.warn = window.console.warn || function () { };
+	window.console.info = window.console.info || function () { };
+	window.console.log = window.console.log || function () { };
 
 	// ui is disabled by default, so enable it
 	whereis.ui_enable(true);
 };
 
-whereis.reportException = function(message, error) {
+whereis.reportException = function (message, error) {
 	console.error(message);
 	//alert(err);
 }
@@ -48,8 +48,7 @@ whereis.getLoaderQueue = function () {
 	return whereis.loader_queue;
 };
 
-whereis.showStatus = function(text)
-{
+whereis.showStatus = function (text) {
 	$("#status_line").html(text);
 }
 
@@ -227,8 +226,7 @@ whereis.image_loaded = function (e) {
 
 				// tolerant check
 				if (latitude >= -90 && latitude <= 90 &&
-					longitude >= -360 && longitude <=360)
-				{
+					longitude >= -360 && longitude <= 360) {
 					image_properties.latitude = latitude;
 					image_properties.longitude = longitude;
 
