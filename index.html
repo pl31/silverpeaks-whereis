@@ -14,7 +14,6 @@
 
 <script type="text/javascript" src="3rdparty/jquery/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyC8hRuNKL28GskPoracpWQq-gT7WrkFCwc"></script>
-<script type="text/javascript" src="3rdparty/exif-js/dataview.js"></script>
 <script type="text/javascript" src="3rdparty/exif-js/exif.js"></script>
 <script type="text/javascript" src="map.js"></script>
 <script type="text/javascript" src="whereis.js"></script>
@@ -33,7 +32,7 @@
 				return true;
 		}
 
-		return window.File && window.FileReader && window.FileList && window.Blob && window.Uint8Array;
+		return window.File && window.FileReader && window.FileList && window.DataView;
  	 }
     function add_pictures_clicked() {
     	if (check_for_fileapi()) {
