@@ -99,16 +99,13 @@ map.initMap = function (image_array, image_array_new_images_index, track_array) 
 	image_array.sort(map.sortByDate);
 	for (i = 0; i < image_array.length; ++i) {
 		try {
-			if (i >= 0 && i < 1000) {
-				var image = new google.maps.MarkerImage(
-					this.createMarkerImage(i + 1),
-					new google.maps.Size(30, 26),
-					new google.maps.Point(0, 0),
-					new google.maps.Point(1, 26)
-				);
-				image_array[i].marker.setIcon(image);
-				image_array[i].marker.setZIndex(-i);
-			}
+			var fontSize;
+			if (i+1 < 100) fontSize = "small";
+			else if (i+1 < 1000) fontSize = "x-small";
+			else fontSize = "xx-small"
+			
+			image_array[i].marker.setLabel({ text: (i+1).toString(), fontSize: fontSize });
+			image_array[i].marker.setZIndex(-i);
 		}
 		catch (e) {
 			console.error("map initmap_5");
@@ -118,58 +115,15 @@ map.initMap = function (image_array, image_array_new_images_index, track_array) 
 	return true;
 };
 
-var image;
-var shadow;
-var shape;
-
-
-map.createMarkerImage = function (text) {
-	var svg =
-		'<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="26px">' +
-		'<path fill="salmon" stroke="black" stroke-width="1" shape-rendering="crispEdges" d="M2,25L2,17L1,17L1,5L2,5L2,4L28,4L28,5L29,5L29,17L28,17L28,18L9,18Z"/>' +
-		'<svg x="2" y="6" width="24" height="11">' +
-		'<text x="13" y="9" letter-spacing="-1" font-stretch="condensed" style="text-anchor: middle; font-family: Arial; font-size: 12px;">' +
-		text +
-		'</text>' +
-		'</svg>' +
-		'</svg>';
-	//return 'data:image/svg+xml,' + svg;
-	//return encodeURI('data:image/svg+xml,' + svg);
-	return 'data:image/svg+xml;base64,' + window.btoa(svg);
-}
-
 map.addImage = function (image_properties) {
 	var latlng = new google.maps.LatLng(image_properties.latitude, image_properties.longitude);
-	if (!image)
-		image = new google.maps.MarkerImage(
-			this.createMarkerImage(''),
-			new google.maps.Size(30, 26),
-			new google.maps.Point(0, 0),
-			new google.maps.Point(1, 26)
-		);
-	if (!shadow)
-		shadow = new google.maps.MarkerImage(
-			'marker/shadow.png',
-			new google.maps.Size(44, 26),
-			new google.maps.Point(0, 0),
-			new google.maps.Point(1, 26)
-		);
-	if (!shape)
-		shape = {
-			coord: [26, 4, 27, 5, 27, 6, 27, 7, 27, 8, 27, 9, 27, 10, 27, 11, 27, 12, 27, 13, 27, 14, 27, 15, 27, 16, 27, 17, 26, 18, 7, 19, 6, 20, 5, 21, 4, 22, 3, 23, 2, 24, 1, 25, 1, 25, 1, 24, 1, 23, 1, 22, 1, 21, 1, 20, 1, 19, 1, 18, 0, 17, 0, 16, 0, 15, 0, 14, 0, 13, 0, 12, 0, 11, 0, 10, 0, 9, 0, 8, 0, 7, 0, 6, 0, 5, 1, 4, 26, 4],
-			type: 'poly'
-		};
 	var marker = new google.maps.Marker({
 		draggable: false,
 		raiseOnDrag: false,
-		icon: image,
-		shadow: shadow,
-		shape: shape,
 		map: google_map,
 		position: latlng
 	});
 	image_properties.marker = marker;
-
 
 	// title: title    
 
