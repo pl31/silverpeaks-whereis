@@ -17,12 +17,7 @@ map.createMarkerImage = function (text) {
 		'<path fill="salmon" stroke="black" stroke-width="1" shape-rendering="crispEdges" d="M2,25L2,17L1,17L1,5L2,5L2,4L28,4L28,5L29,5L29,17L28,17L28,18L9,18Z"/>' +
 		'<svg x="2" y="6" width="24" height="11">' +
 		'<text x="13" y="9" letter-spacing="-1" font-stretch="condensed" style="text-anchor: middle; font-family: Arial; font-size: 11px;">' +
-		text +
-		'</text>' +
-		'</svg>' +
-		'</svg>';
-	//return 'data:image/svg+xml,' + svg;
-	//return encodeURI('data:image/svg+xml,' + svg);
+		text + '</text></svg></svg>';
 	return 'data:image/svg+xml;base64,' + window.btoa(svg);
 }
 
