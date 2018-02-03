@@ -11,6 +11,21 @@ map.sortByDate = function (a, b) {
 	return (a.date == b.date) ? 0 : (a.date > b.date) ? 1 : -1;
 }
 
+map.createMarkerImage = function (text) {
+	var svg =
+		'<svg xmlns="http://www.w3.org/2000/svg" width="30px" height="26px">' +
+		'<path fill="salmon" stroke="black" stroke-width="1" shape-rendering="crispEdges" d="M2,25L2,17L1,17L1,5L2,5L2,4L28,4L28,5L29,5L29,17L28,17L28,18L9,18Z"/>' +
+		'<svg x="2" y="6" width="24" height="11">' +
+		'<text x="13" y="9" letter-spacing="-1" font-stretch="condensed" style="text-anchor: middle; font-family: Arial; font-size: 11px;">' +
+		text +
+		'</text>' +
+		'</svg>' +
+		'</svg>';
+	//return 'data:image/svg+xml,' + svg;
+	//return encodeURI('data:image/svg+xml,' + svg);
+	return 'data:image/svg+xml;base64,' + window.btoa(svg);
+}
+
 map.initMap = function (image_array, image_array_new_images_index, track_array) {
 	// calculate map boundaries
 	var bounds = null;
@@ -87,27 +102,25 @@ map.initMap = function (image_array, image_array_new_images_index, track_array) 
 
 	// sort image_array, show marker
 	image_array.sort(map.sortByDate);
-
-	var markers = [];
 	for (i = 0; i < image_array.length; ++i) {
 		try {
-			var fontSize;
-			if (i+1 < 100) fontSize = "small";
-			else if (i+1 < 1000) fontSize = "x-small";
-			else fontSize = "xx-small"
-			
 			if (image_array[i].marker)
 				image_array[i].marker.setMap(null);
 
 			var marker = new google.maps.Marker({
+				map: google_map,
 				draggable: false,
 				raiseOnDrag: false,
-				position: { lat: image_array[i].latitude, lng: image_array[i].longitude},
-				label: { text: (i+1).toString(), fontSize: fontSize },
-				zIndex: -i
-			});			
+				position: { lat: image_array[i].latitude, lng: image_array[i].longitude },
+				icon: new google.maps.MarkerImage(
+					map.createMarkerImage(i),
+					new google.maps.Size(30, 26),
+					new google.maps.Point(0, 0),
+					new google.maps.Point(1, 26)),
+				shape: { type: 'poly', coord: [26, 4, 27, 5, 27, 6, 27, 7, 27, 8, 27, 9, 27, 10, 27, 11, 27, 12, 27, 13, 27, 14, 27, 15, 27, 16, 27, 17, 26, 18, 7, 19, 6, 20, 5, 21, 4, 22, 3, 23, 2, 24, 1, 25, 1, 25, 1, 24, 1, 23, 1, 22, 1, 21, 1, 20, 1, 19, 1, 18, 0, 17, 0, 16, 0, 15, 0, 14, 0, 13, 0, 12, 0, 11, 0, 10, 0, 9, 0, 8, 0, 7, 0, 6, 0, 5, 1, 4, 26, 4] },
+					zIndex: -i
+			});
 			image_array[i].marker = marker;
-			markers.push(marker);
 
 			// add info window
 			var bubble_content = "";
@@ -122,7 +135,7 @@ map.initMap = function (image_array, image_array_new_images_index, track_array) 
 			}
 
 			google.maps.event.addListener(marker, 'click', (function (marker, bubble_content) {
-				return function() {
+				return function () {
 					if (infowindow) infowindow.close();
 					infowindow = new google.maps.InfoWindow({
 						content: bubble_content
@@ -135,12 +148,6 @@ map.initMap = function (image_array, image_array_new_images_index, track_array) 
 			console.error("map initmap_5");
 		}
 	}
-
-	var options = {	
-		imagePath: '3rdparty/gmaps-marker-clusterer/images/r',
-		maxZoom: 10 
-	};
-	var markerCluster = new MarkerClusterer(google_map, markers, options);
 
 	return true;
 };
