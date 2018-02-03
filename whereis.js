@@ -6,7 +6,6 @@ var whereis = whereis || {};
 
 whereis.ui_enabled = null;
 
-whereis.loader_queue = $({});
 whereis.image_array = null;
 whereis.image_array_new_images_index = null;
 whereis.track_array = null;
@@ -39,14 +38,22 @@ whereis.init = function () {
 	whereis.ui_enable(true);
 };
 
+whereis.queue = function (func) {
+	$(whereis).queue("whereis-queue", func);
+}
+
+whereis.dequeue = function () {
+	$(whereis).dequeue("whereis-queue");
+}
+
+whereis.start_queue = function () {
+	$(whereis).dequeue("whereis-queue");
+}
+
 whereis.reportException = function (message, error) {
 	console.error(message);
 	//alert(err);
 }
-
-whereis.getLoaderQueue = function () {
-	return whereis.loader_queue;
-};
 
 whereis.showStatus = function (text) {
 	$("#status_line").html(text);
@@ -137,7 +144,7 @@ whereis.queue_file_reader = function (files, newmap) {
 		whereis.image_array_new_images_index = whereis.image_array.length;
 
 		$.each(files, function (index, file) {
-			whereis.getLoaderQueue().queue("loaderqueue", function () {
+			whereis.queue(function () {
 				whereis.read_file(file);
 			});
 			whereis.files_to_load_counter++;
@@ -146,10 +153,10 @@ whereis.queue_file_reader = function (files, newmap) {
 	} catch (err) {
 		whereis.reportException("fileapi addimages_2", err);
 	} finally {
-		whereis.getLoaderQueue().queue("loaderqueue", function () {
+		whereis.queue(function () {
 			whereis.show_on_map();
 		});
-		whereis.getLoaderQueue().dequeue("loaderqueue");
+		whereis.start_queue();
 	}
 };
 
@@ -167,7 +174,7 @@ whereis.read_file = function (file) {
 				else
 					binaryReader.readAsArrayBuffer(file);
 			} else {
-				whereis.getLoaderQueue().dequeue("loaderqueue");
+				whereis.dequeue();
 				whereis.files_loaded_counter++;
 				whereis.showStatus("Dateien geladen: " + whereis.files_loaded_counter + "/" + whereis.files_to_load_counter);
 			}
@@ -178,7 +185,7 @@ whereis.read_file = function (file) {
 			textReader.readAsText(file);
 		}
 	} catch (err) {
-		whereis.getLoaderQueue().dequeue("loaderqueue");
+		whereis.dequeue();
 		whereis.reportException(file.name + ": Fehler beim Lesen der Datei (start loading).", err);
 	}
 };
@@ -259,7 +266,7 @@ whereis.image_loaded = function (e) {
 			console.warn(file.name + ": enthält keine exif-Daten.");
 		}
 	} finally {
-		whereis.getLoaderQueue().dequeue("loaderqueue");
+		whereis.dequeue();
 		whereis.files_loaded_counter++;
 		whereis.showStatus("Dateien geladen: " + whereis.files_loaded_counter + "/" + whereis.files_to_load_counter);
 	}
@@ -290,7 +297,7 @@ whereis.text_loaded = function (e) {
 	} catch (err) {
 		whereis.reportError("fileapi text_loaded", err);
 	} finally {
-		whereis.getLoaderQueue().dequeue("loaderqueue");
+		whereis.dequeue();
 		whereis.files_loaded_counter++;
 		whereis.showStatus("Dateien geladen: " + whereis.files_loaded_counter + "/" + whereis.files_to_load_counter);
 	}
