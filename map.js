@@ -113,7 +113,7 @@ map.initMap = function (image_array, image_array_new_images_index, track_array) 
 				raiseOnDrag: false,
 				position: { lat: image_array[i].latitude, lng: image_array[i].longitude },
 				icon: new google.maps.MarkerImage(
-					map.createMarkerImage(i),
+					map.createMarkerImage(i + 1),
 					new google.maps.Size(30, 26),
 					new google.maps.Point(0, 0),
 					new google.maps.Point(1, 26)),
