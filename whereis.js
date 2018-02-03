@@ -223,7 +223,6 @@ whereis.image_loaded = function (e) {
 				var latitude = exif.GPSLatitude[0] + exif.GPSLatitude[1] / 60.0 + exif.GPSLatitude[2] / 3600.0;
 				var longitude = exif.GPSLongitude[0] + exif.GPSLongitude[1] / 60.0 + exif.GPSLongitude[2] / 3600.0;
 
-
 				if (exif.GPSLatitudeRef && exif.GPSLatitudeRef[0] == "S") {
 					latitude = -latitude;
 				}
