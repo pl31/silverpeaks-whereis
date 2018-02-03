@@ -167,10 +167,9 @@ whereis.read_file = function (file) {
 				var binaryReader = new FileReader();
 				binaryReader.file = file; // for later access
 				binaryReader.onloadend = whereis.image_loaded;
-				// here I assume, that exif is part of the first 100k
-				file.slice = file.slice || file.mozSlice || file.webkitSlice;
-				if (file.slice)
-					binaryReader.readAsArrayBuffer(file.slice(0, Math.min(100 * 1024, file.size)));
+				// here I assume, that exif is part of the first 128k
+				if (file.slice && file.size > 128 * 1024)
+					binaryReader.readAsArrayBuffer(file.slice(0, 128 * 1024));
 				else
 					binaryReader.readAsArrayBuffer(file);
 			} else {
@@ -236,10 +235,8 @@ whereis.image_loaded = function (e) {
 					image_properties.latitude = latitude;
 					image_properties.longitude = longitude;
 
-					// create File URL if possible to show thumbnail
-					if (window.URL) {
-						image_properties.fileURL = window.URL.createObjectURL(file);
-					}
+					// create File URL to show thumbnail
+					image_properties.fileURL = window.URL.createObjectURL(file);
 					// orientation to set style for rotation of thumb
 					if (exif.Orientation) {
 						image_properties.Orientation = exif.Orientation;
