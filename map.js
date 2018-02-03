@@ -85,17 +85,7 @@ map.initMap = function (image_array, image_array_new_images_index, track_array) 
 		}
 	}
 
-	// show images
-	for (i = image_array_new_images_index; i < image_array.length; ++i) {
-		try {
-			map.addImage(image_array[i]);
-		}
-		catch (e) {
-			console.error("map initmap_4");
-		}
-	}
-
-	// sort image_array, update marker
+	// sort image_array, show marker
 	image_array.sort(map.sortByDate);
 	for (i = 0; i < image_array.length; ++i) {
 		try {
@@ -104,8 +94,41 @@ map.initMap = function (image_array, image_array_new_images_index, track_array) 
 			else if (i+1 < 1000) fontSize = "x-small";
 			else fontSize = "xx-small"
 			
-			image_array[i].marker.setLabel({ text: (i+1).toString(), fontSize: fontSize });
+			if (image_array[i].marker)
+				image_array[i].marker.setMap(null);
+
+			var latlng = new google.maps.LatLng(image_array[i].latitude, image_array[i].longitude);
+			var marker = new google.maps.Marker({
+				draggable: false,
+				raiseOnDrag: false,
+				map: google_map,
+				position: latlng,
+				label: { text: (i+1).toString(), fontSize: fontSize }
+			});			
+			image_array[i].marker = marker;
 			image_array[i].marker.setZIndex(-i);
+
+			// add info window
+			var bubble_content = "";
+			bubble_content += "<h3>" + image_array[i].filename + "</h3>";
+			if (image_array[i].fileURL) {
+				bubble_content += "<div align=\"center\" style=\"width: 300px; height:182px; overflow: hidden;\">";
+				var image_class = "";
+				if (image_array[i].Orientation && image_array[i].Orientation >= 1 && image_array[i].Orientation <= 8)
+					image_class = "exif_orientation_" + image_array[i].Orientation;
+				bubble_content += "<img height=\"180\" class=\"" + image_class + "\"  style=\"padding: 0px; margin: 0px;\" alt=\"thumbnail\" src=\"" + image_array[i].fileURL + "\" />";
+				bubble_content += "</div>";
+			}
+
+			google.maps.event.addListener(marker, 'click', (function (marker, bubble_content) {
+				return function() {
+					if (infowindow) infowindow.close();
+					infowindow = new google.maps.InfoWindow({
+						content: bubble_content
+					});
+					infowindow.open(google_map, marker);
+				}
+			})(marker, bubble_content));
 		}
 		catch (e) {
 			console.error("map initmap_5");
@@ -113,37 +136,4 @@ map.initMap = function (image_array, image_array_new_images_index, track_array) 
 	}
 
 	return true;
-};
-
-map.addImage = function (image_properties) {
-	var latlng = new google.maps.LatLng(image_properties.latitude, image_properties.longitude);
-	var marker = new google.maps.Marker({
-		draggable: false,
-		raiseOnDrag: false,
-		map: google_map,
-		position: latlng
-	});
-	image_properties.marker = marker;
-
-	// title: title    
-
-	// add info window
-	var bubble_content = "";
-	bubble_content += "<h3>" + image_properties.filename + "</h3>";
-	if (image_properties.fileURL) {
-		bubble_content += "<div align=\"center\" style=\"width: 300px; height:182px; overflow: hidden;\">";
-		var image_class = "";
-		if (image_properties.Orientation && image_properties.Orientation >= 1 && image_properties.Orientation <= 8)
-			image_class = "exif_orientation_" + image_properties.Orientation;
-		bubble_content += "<img height=\"180\" class=\"" + image_class + "\"  style=\"padding: 0px; margin: 0px;\" alt=\"thumbnail\" src=\"" + image_properties.fileURL + "\" />";
-		bubble_content += "</div>";
-	}
-
-	google.maps.event.addListener(marker, 'click', function () {
-		if (infowindow) infowindow.close();
-		infowindow = new google.maps.InfoWindow({
-			content: bubble_content
-		});
-		infowindow.open(google_map, marker);
-	});
 };
