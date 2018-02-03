@@ -87,6 +87,8 @@ map.initMap = function (image_array, image_array_new_images_index, track_array) 
 
 	// sort image_array, show marker
 	image_array.sort(map.sortByDate);
+
+	var markers = [];
 	for (i = 0; i < image_array.length; ++i) {
 		try {
 			var fontSize;
@@ -97,16 +99,15 @@ map.initMap = function (image_array, image_array_new_images_index, track_array) 
 			if (image_array[i].marker)
 				image_array[i].marker.setMap(null);
 
-			var latlng = new google.maps.LatLng(image_array[i].latitude, image_array[i].longitude);
 			var marker = new google.maps.Marker({
 				draggable: false,
 				raiseOnDrag: false,
-				map: google_map,
-				position: latlng,
-				label: { text: (i+1).toString(), fontSize: fontSize }
+				position: { lat: image_array[i].latitude, lng: image_array[i].longitude},
+				label: { text: (i+1).toString(), fontSize: fontSize },
+				zIndex: -i
 			});			
 			image_array[i].marker = marker;
-			image_array[i].marker.setZIndex(-i);
+			markers.push(marker);
 
 			// add info window
 			var bubble_content = "";
@@ -134,6 +135,12 @@ map.initMap = function (image_array, image_array_new_images_index, track_array) 
 			console.error("map initmap_5");
 		}
 	}
+
+	var options = {	
+		imagePath: '3rdparty/gmaps-marker-clusterer/images/r',
+		maxZoom: 10 
+	};
+	var markerCluster = new MarkerClusterer(google_map, markers, options);
 
 	return true;
 };
