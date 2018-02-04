@@ -44,6 +44,9 @@
 		}
 
 		function showView(view) {
+			// hide page menu
+			$("#navbarNavAltMarkup").collapse('hide');
+
 			$.each(["sp-home", "sp-map", "sp-about"], function (index, value) {
 				if (value == view)
 					$("#" + value).removeClass("d-none");
