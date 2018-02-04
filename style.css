@@ -1,15 +1,17 @@
 body
 {
 	/* font for complete doc */
-	font-family: Helvetica New, Arial, Helvetica, Nimbus Sans L, sans-serif;
+	/* font-family: Helvetica New, Arial, Helvetica, Nimbus Sans L, sans-serif;
 	color: #333;
 	font-size: 14px;
-	line-height: 24px;
-	
-	margin: 0px 0px 0px 0px;
+	line-height: 24px; */
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	overflow: hidden;
 }
 
-#drop_zone
+#sp-dropzone
 {
 	position: absolute;
 	top: 0px;
@@ -18,138 +20,33 @@ body
 	bottom: 0px;
 }
 
-#menu_area
-{
+#sp-content {
 	position: absolute;
-	top: 0px;
+	top: 56px;
+	bottom: 0px;
 	left: 0px;
 	right: 0px;
-	height: 32px;
-	background-color: silver;
 }
 
-#menu_list
-{
-	display: block;
-	padding-left: 0px;
-	padding-top: 0px;
-	padding-bottom: 0px;
-	margin-left: 0px;
-	margin-top: 0px;
+.sp-page {
+	overflow: auto;
+	height: 100%;
+	width: 100%;
 }
 
-.menu_item
-{
-	position: relative;
-	vertical-align: top;
-	display: inline-block;
-	line-height: 31px;
-	padding-left: 8px;
-	padding-right: 8px;
+.sp-page-content {
+	max-width: 600px;
 }
 
-.menu_separator
-{
-	position: relative;
-	vertical-align: top;
-	display: inline-block;
-	line-height: 31px;
-	padding-left: 4px;
-	padding-right: 4px;
-	color: gray;
-}
-
-.menu_status
-{
-	position: relative;
-	vertical-align: top;
-	display: inline-block;
-	line-height: 31px;
-	padding-left: 4px;
-	padding-right: 4px;
-	color: gray;
+#sp-map {
+	overflow: hidden;
+	height: 100%;
+	width: 100%;
 }
 
 .invisible
 {
 	display: none;
-}
-
-.menu_item:hover
-{
-	background-color: #ddd;
-}
-
-.menu_item.selected
-{
-	font-weight: bold; 	
-}
-
-.menu_item a
-{
-	font-family: Helvetica New, Arial, Helvetica, Nimbus Sans L, sans-serif;
-	font-size: 14px;
-	text-decoration: none;
-	color: black;
-}
-
-.menu_disabled a
-{
-	color: gray;
-}
-
-#home_area
-{
-	position: absolute;
-	top: 32px;
-	bottom: 0px;
-	left: 0px;
-	right: 0px;
-	overflow: auto;	
-}
-
-#home_page
-{
-	width: 80%;
-	min-width: 200px;
-	max-width: 420px;
-	margin-left: 20px;
-	margin-top: 20px;
-	margin-bottom: 20px;
-	line-height: 120%;
-}
-
-#home_page a
-{
-	text-decoration: none;
-}
-
-#home_page ul
-{
-	margin-top: 4px;
-	padding-left: 24px;
-}
-
-#map_area
-{
-	position: absolute;
-	top: 32px;
-	bottom: 0px;
-	left: 0px;
-	right: 0px;
-	overflow: hidden;	
-	display: none;
-}
-
-#map_canvas
-{
-	position: absolute;
-	top: 0px;
-	bottom: 0px;
-	left: 0px;
-	right: 0px;
-	overflow: hidden;
-	z-index: 1;	
 }
 
 .browser_error

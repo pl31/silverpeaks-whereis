@@ -21,6 +21,19 @@ map.createMarkerImage = function (text) {
 	return 'data:image/svg+xml;base64,' + window.btoa(svg);
 }
 
+map.showMap = function () {
+	if (!google_map) {
+		var mapOptions = {
+			center: new google.maps.LatLng(0,0),
+            zoom: 4,
+			mapTypeId: google.maps.MapTypeId.HYBRID
+		};
+		google_map = new google.maps.Map(document.getElementById("sp-map"), mapOptions);
+	}
+	else
+		google.maps.event.trigger(google_map, 'resize');
+}
+
 map.initMap = function (image_array, image_array_new_images_index, track_array) {
 	// calculate map boundaries
 	var bounds = null;
@@ -66,10 +79,10 @@ map.initMap = function (image_array, image_array_new_images_index, track_array) 
 	// create map, and display in boundaries 
 	// TODO: stupid logic to check for new
 	if (image_array_new_images_index == 0 || !google_map) {
-		var myOptions = {
+		var mapOptions = {
 			mapTypeId: google.maps.MapTypeId.HYBRID
 		};
-		google_map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+		google_map = new google.maps.Map(document.getElementById("sp-map"), mapOptions);
 	}
 	if (bounds.getNorthEast().equals(bounds.getSouthWest())) {
 		google_map.setZoom(14);

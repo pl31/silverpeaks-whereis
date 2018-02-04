@@ -17,10 +17,10 @@ whereis.init = function () {
 	// bind window drop events - prevent browser image load action
 	$(window).bind("dragover dragleave", whereis.no_defaultOperation);
 	// bind drop event to drop zone
-	$("#drop_zone").bind("dragover", whereis.no_defaultOperation);
-	$("#drop_zone").bind("drop", whereis.drop_zone_drop);
+	$("#sp-dropzone").bind("dragover", whereis.no_defaultOperation);
+	$("#sp-dropzone").bind("drop", whereis.drop_zone_drop);
 	// and finally the onchange event for the file input
-	$("#file_selector").bind("change", whereis.file_input_change);
+	$("#file-selector").bind("change", whereis.file_input_change);
 
 	// hack for older chrome versions
 	window.URL = window.URL || window.webkitURL;
@@ -56,30 +56,24 @@ whereis.reportException = function (message, error) {
 }
 
 whereis.showStatus = function (text) {
-	$("#status_line").html(text);
+	$("#file-progress").html(text);
 }
-
-whereis.show_map = function (enabled) {
-	if (enabled) {
-		$("#home_area").css("display", "none");
-		$("#map_area").css("display", "block");
-	} else {
-		$("#home_area").css("display", "block");
-		$("#map_area").css("display", "none");
-	}
-};
 
 whereis.ui_enable = function (enabled) {
 	whereis.ui_enabled = enabled;
 
 	if (enabled) {
-		$("#file_selector").removeAttr("disabled");
-		$("#menu_w2").removeClass("menu_disabled");
-		$("#status_line").addClass("invisible");
-	} else {
-		$("#file_selector").attr("disabled", true);
-		$("#menu_w2").addClass("menu_disabled");
-		$("#status_line").removeClass("invisible");
+		// enable file selector
+		$("#file-selector").removeAttr("disabled");
+		$("#file-add-button").removeClass("disabled");
+		// do not show status line
+		$("#file-progress").addClass("d-none");
+	} else { // reading images
+		// file-selector disabled
+		$("#file-selector").attr("disabled", true);
+		$("#file-add-button").addClass("disabled");
+		// show status line
+		$("#file-progress").removeClass("d-none");
 	}
 };
 
@@ -97,7 +91,7 @@ whereis.drop_zone_drop = function (je) {
 	var files = dt.files;
 
 	// TODO: can I avoid the get(0)
-	if (this === $("#drop_zone").get(0)) {
+	if (this === $("#sp-dropzone").get(0)) {
 		whereis.queue_file_reader(files, false);
 	}
 };
@@ -302,9 +296,9 @@ whereis.text_loaded = function (e) {
 whereis.show_on_map = function () {
 	try {
 		if ((whereis.image_array && whereis.image_array.length > 0) || (whereis.track_array && whereis.track_array.length > 0)) {
-			whereis.show_map(true); // switch viewport
+			showView("sp-map"); // switch viewport
 			if (!map.initMap(whereis.image_array, whereis.image_array_new_images_index, whereis.track_array)) {
-				whereis.show_map(false);
+				showView("sp-home");
 			}
 		}
 	} catch (err) {

@@ -5,16 +5,20 @@
 	<meta charset="utf-8" />
 	<meta name="keywords" content="exif jpg foto geotag geotagging geoimaging geocode gpx gps viewer">
 	<meta name="robots" content="index, follow">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-	<title>silverpeaks.de - whereis</title>
+	<title>whereis.silverpeaks.de</title>
 
-	<link href="style.css" rel="stylesheet" type="text/css" />
 	<link href="3rdparty/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	 crossorigin="anonymous">
 	<link href="3rdparty/shariff/shariff.min.css" rel="stylesheet" type="text/css" />
+	<link href="style.css" rel="stylesheet" type="text/css" />
 
 	<script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyC8hRuNKL28GskPoracpWQq-gT7WrkFCwc"></script>
 	<script type="text/javascript" src="3rdparty/jquery/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript" src="3rdparty/exif-js/exif.js"></script>
+	<script type="text/javascript" src="3rdparty/shariff/shariff.min.js"></script>
 	<script type="text/javascript" src="map.js"></script>
 	<script type="text/javascript" src="whereis.js"></script>
 
@@ -22,22 +26,28 @@
 		function check_for_fileapi() {
 			if (navigator && navigator.userAgent) {
 				var userAgent = navigator.userAgent.toLowerCase();
-				if (userAgent.indexOf("msnbot") != -1 ||
-					userAgent.indexOf("googlebot") != -1 ||
-					userAgent.indexOf("google web preview") != -1 ||
-					userAgent.indexOf("bingbot") != -1 ||
-					userAgent.indexOf("spider") != -1 ||
-					userAgent.indexOf("crawler") != -1)
+				var bots = ["msnbot", "googlebot", "google web preview", "bingbot", "spider", "crawler"];
+				var isBot = false;
+				$.each(bots, function (index, value) {
+					isBot = isBot || (userAgent.indexOf(value) != -1);
+				});
+				if (isBot)
 					return true;
 			}
 
 			return window.File && window.FileReader && window.FileList && window.DataView && window.URL;
 		}
 
-		function add_pictures_clicked() {
-			if (check_for_fileapi()) {
-				$("#file_selector").click();
-			}
+		function showView(view) {
+			$.each(["sp-home", "sp-map", "sp-about"], function (index, value) {
+				if (value == view)
+					$("#" + value).removeClass("d-none");
+				else
+					$("#" + value).addClass("d-none");
+			});
+
+			if (view = "sp-map")
+				map.showMap();
 		}
 
 		function init() {
@@ -48,93 +58,102 @@
 			else
 				$('#browser_error').removeClass('invisible');
 		}
+
 		$(document).ready(init);
 	</script>
 </head>
 
 <body>
-	<div id="drop_zone">
-		<div id="menu_area">
-			<ul id="menu_list">
-				<li class="menu_item">
-					<a id="menu_silverpeaks" href="https://silverpeaks.de" title="silverpeaks.de">silverpeaks.de</a>
-				</li>
-				<li class="menu_item selected">
-					<a id="menu_whereis" href="javascript:window.location.reload()" title="whereis">whereis</a>
-				</li>
-				<li id="menu_w1" class="menu_separator">|</li>
-				<li id="menu_w2" class="menu_item menu_disabled">
-					<a href="javascript:add_pictures_clicked()" title="Dateien hinzufügen">Dateien hinzufügen</a>
-				</li>
-				<li id="status_line" class="menu_status invisible">
-				</li>
-			</ul>
-			<!-- TODO: webkitdirectory? -->
-			<input id="file_selector" type="file" multiple />
-		</div>
-		<div id="home_area">
-			<div id="home_page">
-				<h1 id="heading1_silverpeaks">
-					<a id="heading1_silverpeaks_link" href="https://silverpeaks.de" title="silverpeaks.de">silverpeaks.de</a>
-				</h1>
-				<h2 id="heading2_silverpeaks">whereis 0.92 (beta)</h2>
-				<div id="description" class="invisible">
-					<p>
-						<em>whereis</em> zeigt den Aufnahmeort Ihrer Fotos (jpg) auf einer Karte an. Die exif-Daten der Fotos müssen GPS-Geotags
-						enthalten. Zusätzlich zu den Fotos können GPX-Tracks dargestellt werden.
-					</p>
-					<p>
-						Ziehen Sie mit der Maus eine Datei aus dem Dateimanager auf diese Seite oder klicken Sie auf
-						<em>Dateien hinzufügen</em>.
-					</p>
-					<ul>
-						<li>Es ist keine Anmeldung erforderlich.</li>
-						<li>Ihre Fotos werden nicht hochgeladen.</li>
-						<li>Es muss keine weitere Software installiert werden.</li>
-					</ul>
+	<div id="sp-dropzone">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<a class="navbar-brand" href="javascript:window.location.reload()">whereis</a>
+
+			<input id="file-selector" class="d-none" type="file" placeholder="Add" multiple>
+			<button class="btn btn-sm btn-outline-secondary" type="button" onclick="$('#file-selector').click()">Add</button>
+
+			<p id="file-progress" class="nav navbar-text ml-3 d-none"></p>
+
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup"
+			 aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+				<div class="navbar-nav ml-auto">
+					<a class="nav-item nav-link" href="javascript:showView('sp-home')">Home</a>
+					<a class="nav-item nav-link" href="javascript:showView('sp-map')">Map</a>
+					<!-- <a class="nav-item nav-link" href="javascript:showView('sp-about')">About</a> -->
 				</div>
-				<div id="browser_error" class="browser_error invisible">
-					<p>
-						<em>whereis</em> funktioniert in diesem Browser leider nicht, da dieser die
-						<em>HTML5-FileApi</em> nicht unterstützt.
-					</p>
-					<p>
-						<em>whereis</em> sollte in aktuellen Browsern funktionieren.
-					</p>
-				</div>
-				<noscript>
-					<div class="browser_error">
+			</div>
+		</nav>
+
+		<div id="sp-content">
+			<div id="sp-home" class="sp-page container-fluid">
+				<div class="sp-page-content">
+					<h1 id="heading1_silverpeaks">
+						<a id="heading1_silverpeaks_link" href="https://silverpeaks.de" title="silverpeaks.de">silverpeaks.de</a>
+					</h1>
+					<h2 id="heading2_silverpeaks">whereis 0.92 (beta)</h2>
+					<div id="description" class="invisible">
 						<p>
-							<em>whereis</em> funktioniert in diesem Browser leider nicht, da dieser kein
-							<em>JavaScript</em> unterstützt.
+							<em>whereis</em> zeigt den Aufnahmeort Ihrer Fotos (jpg) auf einer Karte an. Die exif-Daten der Fotos müssen GPS-Geotags
+							enthalten. Zusätzlich zu den Fotos können GPX-Tracks dargestellt werden.
+						</p>
+						<p>
+							Ziehen Sie mit der Maus eine Datei aus dem Dateimanager auf diese Seite oder klicken Sie auf
+							<em>Dateien hinzufügen</em>.
+						</p>
+						<ul>
+							<li>Es ist keine Anmeldung erforderlich.</li>
+							<li>Ihre Fotos werden nicht hochgeladen.</li>
+							<li>Es muss keine weitere Software installiert werden.</li>
+						</ul>
+					</div>
+					<div id="browser_error" class="browser_error invisible">
+						<p>
+							<em>whereis</em> funktioniert in diesem Browser leider nicht, da dieser die
+							<em>HTML5-FileApi</em> nicht unterstützt.
+						</p>
+						<p>
+							<em>whereis</em> sollte in aktuellen Browsern funktionieren.
 						</p>
 					</div>
-				</noscript>
-				<p></p>
-				Weiterführende Links:
-				<ul>
-					<li>
-						<a href="https://silverpeaks.de/blog/?page_id=326">Ausführliche Beschreibung</a>
+					<noscript>
+						<div class="browser_error">
+							<p>
+								<em>whereis</em> funktioniert in diesem Browser leider nicht, da dieser kein
+								<em>JavaScript</em> unterstützt.
+							</p>
+						</div>
+					</noscript>
+					<p></p>
+					Weiterführende Links:
+					<ul>
+						<li>
+							<a href="https://silverpeaks.de/blog/?page_id=326">Ausführliche Beschreibung</a>
+							<br>
+						</li>
+						<li>
+							<a href="https://silverpeaks.de/blog/?page_id=17">Impressum</a>
+						</li>
+					</ul>
+					<p>
 						<br>
-					</li>
-					<li>
-						<a href="https://silverpeaks.de/blog/?page_id=17">Impressum</a>
-					</li>
-				</ul>
-				<p>
-					<br>
-				</p>
+					</p>
 
-				<div class="shariff" data-url="http://whereis.silverpeaks.de" data-services="[&quot;facebook&quot;,&quot;googleplus&quot;,&quot;xing&quot;,&quot;info&quot;]"
-				 data-theme="white"></div>
+					<div class="shariff" data-url="http://whereis.silverpeaks.de" data-services="[&quot;facebook&quot;,&quot;googleplus&quot;,&quot;xing&quot;,&quot;info&quot;]"
+					 data-theme="white"></div>
+				</div>
 			</div>
-		</div>
-		<div id="map_area">
-			<div id="map_canvas"></div>
+
+			<div id="sp-map" class="d-none"></div>
+
+			<div id="sp-about" class="sp-page container-fluid d-none">
+				<div class="sp-page-content">
+				</div>
+			</div>
+
 		</div>
 	</div>
-
-	<script type="text/javascript" src="3rdparty/shariff/shariff.min.js"></script>
 
 </body>
 
