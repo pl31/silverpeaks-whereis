@@ -1,27 +1,6 @@
-body
-{
-	/* font for complete doc */
-	/* font-family: Helvetica New, Arial, Helvetica, Nimbus Sans L, sans-serif;
-	color: #333;
-	font-size: 14px;
-	line-height: 24px; */
-	height: 100%;
-	width: 100%;
-	position: absolute;
-	overflow: hidden;
-}
-
-#sp-dropzone
-{
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	right: 0px;
-	bottom: 0px;
-}
-
 #sp-content {
 	position: absolute;
+	overflow: hidden;
 	top: 56px;
 	bottom: 0px;
 	left: 0px;
@@ -44,11 +23,6 @@ body
 	width: 100%;
 }
 
-.invisible
-{
-	display: none;
-}
-
 .browser_error
 {
 	background-color: #FFFAC2;
@@ -63,11 +37,6 @@ body
 }
 
 /* font styles for the headings */
-#heading1_silverpeaks
-{
-	margin: 0px;
-}
-
 #heading1_silverpeaks_link
 {
 	font-size: 30px;
@@ -82,14 +51,6 @@ body
 	font-weight: normal;
 	text-decoration: none;
 	color: gray;
-}
-
-#file_selector
-{
-	visibility: hidden;
-	width: 0px;
-	height: 0px;
-	padding: 0px 0px 0px 0px;
 }
 
 /* Orientation style for photos */

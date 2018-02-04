@@ -57,11 +57,11 @@
 
 		function init() {
 			if (check_for_fileapi()) {
-				$('#description').removeClass('invisible');
+				$('#description').removeClass('d-none');
 				whereis.init();
 			}
 			else
-				$('#browser_error').removeClass('invisible');
+				$('#browser_error').removeClass('d-none');
 		}
 
 		$(document).ready(init);
@@ -70,7 +70,7 @@
 
 <body>
 	<div id="sp-dropzone">
-		<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
 			<a class="navbar-brand" href="javascript:window.location.reload()">whereis</a>
 
 			<input id="file-selector" class="d-none" type="file" placeholder="Add" multiple>
@@ -94,11 +94,11 @@
 		<div id="sp-content">
 			<div id="sp-home" class="sp-page container-fluid">
 				<div class="sp-page-content">
-					<h1 id="heading1_silverpeaks">
+					<h1>
 						<a id="heading1_silverpeaks_link" href="https://silverpeaks.de" title="silverpeaks.de">silverpeaks.de</a>
 					</h1>
 					<h2 id="heading2_silverpeaks">whereis 0.92 (beta)</h2>
-					<div id="description" class="invisible">
+					<div id="description" class="d-none">
 						<p>
 							<em>whereis</em> zeigt den Aufnahmeort Ihrer Fotos (jpg) auf einer Karte an. Die exif-Daten der Fotos müssen GPS-Geotags
 							enthalten. Zusätzlich zu den Fotos können GPX-Tracks dargestellt werden.
@@ -113,7 +113,7 @@
 							<li>Es muss keine weitere Software installiert werden.</li>
 						</ul>
 					</div>
-					<div id="browser_error" class="browser_error invisible">
+					<div id="browser_error" class="browser_error d-none">
 						<p>
 							<em>whereis</em> funktioniert in diesem Browser leider nicht, da dieser die
 							<em>HTML5-FileApi</em> nicht unterstützt.
