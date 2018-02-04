@@ -97,6 +97,7 @@ body
 
 .exif_orientation_1
 {
+	transform: rotate(0deg);
 }
 
 .exif_orientation_2
