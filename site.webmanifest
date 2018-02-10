@@ -1,6 +1,6 @@
 {
-    "name": "whereis.silverpeaks.de",
-    "short_name": "whereis",
+    "name": "",
+    "short_name": "",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
@@ -13,8 +13,7 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#5bbad5",
-    "background_color": "#5bbad5",
-    "start_url": "https://whereis.silverpeaks.de",
+    "theme_color": "#c0c0c0",
+    "background_color": "#c0c0c0",
     "display": "standalone"
 }
