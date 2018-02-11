@@ -132,7 +132,7 @@ map.initMap = function (image_array, image_array_new_images_index, track_array) 
 
 			// add info window
 			var bubble_content = "";
-			bubble_content += "<h3>" + image_array[i].filename + "</h3>";
+			bubble_content += "<h5>" + image_array[i].filename + "</h5>";
 			if (image_array[i].fileURL) {
 				bubble_content += "<div align=\"center\" style=\"width: 300px; height:182px; overflow: hidden;\">";
 				var image_class = "";
