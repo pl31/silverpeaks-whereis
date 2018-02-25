@@ -55,8 +55,8 @@ whereis.reportException = function (message, error) {
 	//alert(err);
 }
 
-whereis.showStatus = function (text) {
-	$("#file-progress").html(text);
+whereis.showStatus = function (files_loaded, files_to_load) {
+	$("#file-progress").html(String(files_loaded) + "/" + String(files_to_load));
 }
 
 whereis.ui_enable = function (enabled) {
@@ -143,7 +143,7 @@ whereis.queue_file_reader = function (files, newmap) {
 			});
 			whereis.files_to_load_counter++;
 		});
-		whereis.showStatus("Zu ladende Dateien: " + whereis.files_to_load_counter);
+		whereis.showStatus(0, whereis.files_to_load_counter);
 	} catch (err) {
 		whereis.reportException("fileapi addimages_2", err);
 	} finally {
@@ -169,7 +169,7 @@ whereis.read_file = function (file) {
 			} else {
 				whereis.dequeue();
 				whereis.files_loaded_counter++;
-				whereis.showStatus("Dateien geladen: " + whereis.files_loaded_counter + "/" + whereis.files_to_load_counter);
+				whereis.showStatus(whereis.files_loaded_counter, whereis.files_to_load_counter);
 			}
 		} else {
 			var textReader = new FileReader();
@@ -258,7 +258,7 @@ whereis.image_loaded = function (e) {
 	} finally {
 		whereis.dequeue();
 		whereis.files_loaded_counter++;
-		whereis.showStatus("Dateien geladen: " + whereis.files_loaded_counter + "/" + whereis.files_to_load_counter);
+		whereis.showStatus(whereis.files_loaded_counter, whereis.files_to_load_counter);
 	}
 };
 
@@ -285,11 +285,11 @@ whereis.text_loaded = function (e) {
 			console.warn(e.target.file.name + ": unbekannter Dateityp");
 		}
 	} catch (err) {
-		whereis.reportError("fileapi text_loaded", err);
+		whereis.reportException("fileapi text_loaded", err);
 	} finally {
 		whereis.dequeue();
 		whereis.files_loaded_counter++;
-		whereis.showStatus("Dateien geladen: " + whereis.files_loaded_counter + "/" + whereis.files_to_load_counter);
+		whereis.showStatus(whereis.files_loaded_counter, whereis.files_to_load_counter);
 	}
 };
 
