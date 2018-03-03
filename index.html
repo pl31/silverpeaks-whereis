@@ -80,8 +80,10 @@
 		<nav class="navbar navbar-expand-lg navbar-light fixed-top" style="background-color: silver;">
 			<a class="navbar-brand" href="javascript:window.location.reload()">whereis</a>
 
+			<button class="btn btn-sm btn-outline-secondary mr-2" type="button" onclick="window.location.reload()"> <i class="fas fa-sync-alt mx-1"></i> </button>
+
 			<input id="file-selector" class="d-none" type="file" placeholder="Add" multiple>
-			<button class="btn btn-sm btn-outline-secondary mr-auto disabled" type="button" onclick="$('#file-selector').click()"><i class="fas fa-map-marker-alt"></i></button>
+			<button class="btn btn-sm btn-outline-secondary mr-auto" type="button" onclick="$('#file-selector').click()"><i class="fas fa-map-marker-alt mx-1"></i></button>
 
 			<p id="file-progress" class="nav navbar-text ml-3 mr-3 d-none"></p>
 
