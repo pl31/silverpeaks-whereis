@@ -119,14 +119,23 @@ map.initMap = function (image_array, image_array_new_images_index, track_array) 
 				map: google_map,
 				draggable: false,
 				raiseOnDrag: false,
-				position: { lat: image_array[i].latitude, lng: image_array[i].longitude },
-				icon: new google.maps.MarkerImage(
-					map.createMarkerImage(i + 1),
-					new google.maps.Size(30, 26),
-					new google.maps.Point(0, 0),
-					new google.maps.Point(1, 26)),
-				shape: { type: 'poly', coord: [26, 4, 27, 5, 27, 6, 27, 7, 27, 8, 27, 9, 27, 10, 27, 11, 27, 12, 27, 13, 27, 14, 27, 15, 27, 16, 27, 17, 26, 18, 7, 19, 6, 20, 5, 21, 4, 22, 3, 23, 2, 24, 1, 25, 1, 25, 1, 24, 1, 23, 1, 22, 1, 21, 1, 20, 1, 19, 1, 18, 0, 17, 0, 16, 0, 15, 0, 14, 0, 13, 0, 12, 0, 11, 0, 10, 0, 9, 0, 8, 0, 7, 0, 6, 0, 5, 1, 4, 26, 4] },
-					zIndex: -i
+				optimized: false,
+				position: { 
+					lat: image_array[i].latitude, 
+					lng: image_array[i].longitude 
+				},
+				icon: {
+					url: map.createMarkerImage(i + 1),
+					size: new google.maps.Size(30, 26),
+					scaledSize: new google.maps.Size(30, 26),
+					origin: new google.maps.Point(0, 0),
+					anchor: new google.maps.Point(1, 26)
+				},
+				shape: { 
+					type: 'poly', 
+					coord: [26, 4, 27, 5, 27, 6, 27, 7, 27, 8, 27, 9, 27, 10, 27, 11, 27, 12, 27, 13, 27, 14, 27, 15, 27, 16, 27, 17, 26, 18, 7, 19, 6, 20, 5, 21, 4, 22, 3, 23, 2, 24, 1, 25, 1, 25, 1, 24, 1, 23, 1, 22, 1, 21, 1, 20, 1, 19, 1, 18, 0, 17, 0, 16, 0, 15, 0, 14, 0, 13, 0, 12, 0, 11, 0, 10, 0, 9, 0, 8, 0, 7, 0, 6, 0, 5, 1, 4, 26, 4] 
+				},
+				zIndex: -i
 			});
 			image_array[i].marker = marker;
 
