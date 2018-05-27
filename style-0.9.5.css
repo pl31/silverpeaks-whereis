@@ -39,6 +39,7 @@
 /* font styles for the headings */
 h1
 {
+	padding-top: 20px;
 	font-size: 30px;
 	font-weight: bold;
 	text-decoration: none;
