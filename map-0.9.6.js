@@ -25,7 +25,8 @@ map.showMap = function () {
 	if (!google_map) {
 		var mapOptions = {
 			center: new google.maps.LatLng(0,0),
-            zoom: 4,
+			zoom: 4,
+			scaleControl: true,
 			mapTypeId: google.maps.MapTypeId.HYBRID
 		};
 		google_map = new google.maps.Map(document.getElementById("sp-map"), mapOptions);
