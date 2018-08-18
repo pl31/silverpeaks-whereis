@@ -81,6 +81,7 @@ map.initMap = function (image_array, image_array_new_images_index, track_array) 
 	// TODO: stupid logic to check for new
 	if (image_array_new_images_index == 0 || !google_map) {
 		var mapOptions = {
+			scaleControl: true,
 			mapTypeId: google.maps.MapTypeId.HYBRID
 		};
 		google_map = new google.maps.Map(document.getElementById("sp-map"), mapOptions);
