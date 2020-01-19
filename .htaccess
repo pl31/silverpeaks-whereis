@@ -1,3 +1,8 @@
+RewriteEngine On
+# remove leading www.
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^ %{REQUEST_SCHEME}://%1%{REQUEST_URI} [R=301,L]
+# block access to git folder
 RedirectMatch 404 /\.git
 
 <IfModule mod_headers.c>
